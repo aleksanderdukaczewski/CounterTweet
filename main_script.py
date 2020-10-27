@@ -1,6 +1,7 @@
 import tweepy
 from tkinter import *
 import datetime
+import tkinter.font as tkFont
 
 #read vars
 
@@ -13,25 +14,34 @@ consumer_secret = varlist[1]
 access_token = varlist[2]
 access_token_secret = varlist[3]
 dateToCountdown = varlist[4]
+tweetcontent = varlist[5]
 
 #gui
 
 root = Tk()
+root.title("CounterTweet")
+
+default_font = tkFont.nametofont("TkDefaultFont")
+default_font.configure(size=8)
+
 label1 = Label( root, text="API key")
-E1 = Entry(root, bd =5)
+E1 = Entry(root, bd =5, justify=CENTER)
 E1.insert(END, consumer_key)
 label2 = Label( root, text="API key secret")
-E2 = Entry(root, bd =5)
+E2 = Entry(root, bd =5, justify=CENTER)
 E2.insert(END, consumer_secret)
 label3 = Label( root, text="Access token")
-E3 = Entry(root, bd =5)
+E3 = Entry(root, bd =5, justify=CENTER)
 E3.insert(END, access_token)
 label4 = Label( root, text="Access token secret")
-E4 = Entry(root, bd =5)
+E4 = Entry(root, bd =5, justify=CENTER)
 E4.insert(END, access_token_secret)
-label5 = Label(root, text="Date to count down to (YYYY-MM-DD)")
-E5 = Entry(root, bd =5)
+label5 = Label(root, text="Date to count down to (format: YYYY-MM-DD)")
+E5 = Entry(root, bd =5, justify=CENTER, width=10)
 E5.insert(END, dateToCountdown)
+label6 = Label(root, text="Enter your tweet (insert {number} in place of your number)")
+E6 = Entry(root, bd =5, justify=CENTER, width=50)
+E6.insert(END, tweetcontent)
 
 label1.pack()
 E1.pack()
@@ -43,6 +53,8 @@ label4.pack()
 E4.pack()
 label5.pack()
 E5.pack()
+label6.pack()
+E6.pack()
 
 #get values from entry fields
 
@@ -56,19 +68,22 @@ def getE4():
     return E4.get()
 def getE5():
     return E5.get()
+def getE6():
+    return E6.get()
 
 #save values from entry fields to vars.txt
 
 def saveValues():
     f = open("vars.txt","w")
-    f.write(getE1()+'\n'+getE2()+'\n'+getE3()+'\n'+getE4()+'\n'+getE5())
+    f.write(getE1()+'\n'+getE2()+'\n'+getE3()+'\n'+getE4()+'\n'+getE5()+'\n'+getE6())
     f.close()
-    global consumer_key, consumer_secret, access_token, access_token_secret, dateToCountdown
+    global consumer_key, consumer_secret, access_token, access_token_secret, dateToCountdown, tweetcontent
     consumer_key = getE1()
     consumer_secret = getE2()
     access_token = getE3()
     access_token_secret = getE4()
     dateToCountdown = getE5()
+    tweetcontent = getE6()
 
 
 #follow back all of the followers
@@ -91,7 +106,7 @@ def calculateDateDif():
 #authenticate credentials with tweepy
 
 def auth():
-    auth  tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     global api
     api = tweepy.API(auth)
@@ -103,7 +118,7 @@ def mainFunction():
     calculateDateDif()
     auth()
     followBack()
-    api.update_status('There are {number} days left until something great happens!'.format(number=difference))
+    api.update_status(tweetcontent.format(number=difference))
 
 
 #save keys and submit buttons
