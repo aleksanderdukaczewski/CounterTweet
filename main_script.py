@@ -82,7 +82,6 @@ def saveValues():
     access_token_secret = getE4()
     tweetcontent = getE5()
 
-
 #follow back all of the followers
 
 def followBack():
@@ -95,7 +94,6 @@ def calculateDateDif():
     present = datetime.datetime.now().date()
     global difference
     difference = str((cal.get_date() - present).days)
-
 
 #authenticate credentials with tweepy
 
@@ -114,7 +112,6 @@ def mainFunction():
     followBack()
     api.update_status(tweetcontent.format(number=difference))
 
-
 #save keys and submit buttons
 
 save = Button(root, text ="Save field info", command = saveValues)
@@ -126,8 +123,6 @@ cal.pack()
 
 tweet = Button(root, text ="Tweet", command = mainFunction)
 tweet.pack(pady=5)
-
-
 
 #run the gui
 
