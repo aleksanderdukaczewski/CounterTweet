@@ -6,5 +6,4 @@ To use this app you need to:
 2. Install requirements.txt using <code> pip install -r requirements.txt </code>.
 3. Fill out fields in the app with the keys you generated.
 4. Enter the date you want CounterTweet to count down to.
-5. Enter your message, inserting "{number}" where you want your number to be placed.
-
+5. Enter your message, inserting <code>{number}</code> where you want your number to be placed.
